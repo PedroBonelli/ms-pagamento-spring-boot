@@ -13,16 +13,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PagamentoService {
 
     @Autowired
     private PagamentoRepository repository;
 
+//    @Transactional(readOnly = true)
+//    public Page<PagamentoDTO> findAll(Pageable pageable){
+//        Page<Pagamento> page = repository.findAll(pageable);
+//        return page.map(PagamentoDTO::new);
+//    }
+
     @Transactional(readOnly = true)
-    public Page<PagamentoDTO> findAll(Pageable pageable){
-        Page<Pagamento> page = repository.findAll(pageable);
-        return page.map(PagamentoDTO::new);
+    public List<PagamentoDTO> findAll(){
+        return repository.findAll().stream().map(PagamentoDTO::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

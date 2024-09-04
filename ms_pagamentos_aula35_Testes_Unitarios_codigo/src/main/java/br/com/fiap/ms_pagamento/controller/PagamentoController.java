@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/pagamentos")
@@ -22,10 +23,9 @@ public class PagamentoController {
     private PagamentoService service;
 
     @GetMapping
-    public ResponseEntity<Page<PagamentoDTO>> findAll(
-            @PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<List<PagamentoDTO>> findAll() {
 
-        Page<PagamentoDTO> dto = service.findAll(pageable);
+        List<PagamentoDTO> dto = service.findAll();
         return ResponseEntity.ok(dto);
     }
 
@@ -41,7 +41,7 @@ public class PagamentoController {
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(dto)
+                .buildAndExpand(dto.getId())
                 .toUri();
 
         return ResponseEntity.created(uri).body(dto);
